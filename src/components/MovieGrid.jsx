@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { db } from "../firebase";
 import { auth } from "../firebase/firebase";
 import { fetchLoginRequest } from "../actions/authActions";
+import FavButton from "./FavButton";
 // Styled
 import styled from "styled-components";
 // fontawesome
@@ -80,6 +81,7 @@ class MovieGrid extends Component {
     };
 
     this.addFavourite = this.addFavourite.bind(this);
+    this.removeFavourite = this.removeFavourite.bind(this);
   }
 
   addFavourite(movieId, movieTitle) {
@@ -146,25 +148,18 @@ class MovieGrid extends Component {
               </a>
               <MovieListCardDetails>
                 <h2>{title}</h2>
-                {isAuthenticated && !matched ? (
-                  <div>
-                    <FontAwesomeIcon
-                      icon={faStar}
-                      color={"gray"}
-                      style={{ cursor: "pointer" }}
-                      onClick={() => this.addFavourite(id, title)}
-                    >
-                      Click me
-                    </FontAwesomeIcon>
-                  </div>
-                ) : (
-                  <FontAwesomeIcon
-                    icon={faStar}
-                    color={"yellow"}
-                    style={{ cursor: "pointer" }}
-                    onClick={() => this.removeFavourite(id)}
+                {console.log(isAuthenticated)}
+                {isAuthenticated === true ? (
+                  <FavButton
+                    isAuthenticated={isAuthenticated}
+                    matched={matched}
+                    id={id}
+                    title={title}
+                    addFavourite={this.addFavourite}
+                    removeFavourite={this.removeFavourite}
                   />
-                )}
+                ) : null}
+
                 <h3>Release Date: {release_date}</h3>
                 <h3 className="voteavg">Hype: {popularity.toFixed(0)}</h3>
                 <p>{overview.substring(0, overviewLength)}</p>
